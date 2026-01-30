@@ -10,18 +10,17 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "http://localhost:5173",          // local Vite
-      "http://localhost:3000",          // CRA
-      "https://neewton.onrender.com"    // 🔥 Render frontend
+      "http://localhost:5173",
+      "http://localhost:3000",
+      "https://neewton.onrender.com" // ✅ frontend URL
     ],
     methods: ["GET", "POST", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "name", "code"],
-    credentials: true
+    allowedHeaders: ["Content-Type", "name", "code"]
   })
 );
 
-/* 🔥 FIX PREFLIGHT (THIS IS CRITICAL) */
-app.options("*", cors());
+/* ✅ THIS HANDLES PREFLIGHT SAFELY */
+app.use(cors());
 
 /* ================= MIDDLEWARE ================= */
 app.use(express.json());
