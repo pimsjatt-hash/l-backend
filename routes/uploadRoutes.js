@@ -44,7 +44,8 @@ router.post("/upload", auth, upload.single("file"), async (req, res) => {
 
     const memory = await Memory.create({
       type: isVideo ? "video" : "photo",
-      fileUrl: `uploads/${isVideo ? "videos" : "photos"}/${req.file.filename}`,
+      
+      fileUrl: `/uploads/${isVideo ? "videos" : "photos"}/${req.file.filename}`,
       uploadedBy: req.user
     });
 
