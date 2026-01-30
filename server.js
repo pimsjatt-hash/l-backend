@@ -6,17 +6,22 @@ require("dotenv").config();
 
 const app = express();
 
-/* ================= CORS (CRITICAL FIX) ================= */
+/* ================= CORS (RENDER + LOCAL) ================= */
 app.use(
   cors({
     origin: [
-      "http://localhost:5173", // Vite
-      "http://localhost:3000"  // CRA (just in case)
+      "http://localhost:5173",          // local Vite
+      "http://localhost:3000",          // CRA
+      "https://neewton.onrender.com"    // 🔥 Render frontend
     ],
-    methods: ["GET", "POST", "DELETE"],
-    allowedHeaders: ["Content-Type", "name", "code"]
+    methods: ["GET", "POST", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "name", "code"],
+    credentials: true
   })
 );
+
+/* 🔥 FIX PREFLIGHT (THIS IS CRITICAL) */
+app.options("*", cors());
 
 /* ================= MIDDLEWARE ================= */
 app.use(express.json());
@@ -33,6 +38,6 @@ app.use("/api", require("./routes/uploadRoutes"));
 
 /* ================= START SERVER ================= */
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () =>
-  console.log(`Server running on port ${PORT}`)
-);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
